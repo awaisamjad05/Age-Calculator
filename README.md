@@ -1,4 +1,4 @@
-# Chronos — Premium Age & Cosmic Portal
+# AG-Tech Chronos — Premium Age & Cosmic Portal
 
 Chronos is a handcrafted, state-of-the-art, single-page age dashboard built using vanilla HTML5, CSS3, and JavaScript. It features no external AI dependencies, relying on precise astronomical and calendar mathematics to deliver an immersive, premium user experience.
 
