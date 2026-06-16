@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chronos — AG-TECH Premium Age Dashboard</title>
+    <meta name="description" content="Explore your life in seconds, milestones, zodiac signs, and cosmic planet ages with this premium, real-time age calculator.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!-- Canvas Confetti CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+<body class="dark-theme">
+    <div class="glow-container">
+        <div class="glow-orb orb-1"></div>
+        <div class="glow-orb orb-2"></div>
+        <div class="glow-orb orb-3"></div>
+    </div>
+
+    <main class="dashboard-container">
+        <!-- Sidebar: Profile & Config -->
+        <aside class="sidebar">
+            <div class="logo-area">
+                <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+                <div class="logo-text">
+                    <h1>CHRONOS</h1>
+                    <span>AG-TECH | Age Portal</span>
+                </div>
+            </div>
+
+            <!-- Profile Manager -->
+            <div class="card profile-manager">
+                <div class="card-header">
+                    <h2>Profiles</h2>
+                    <button id="add-profile-btn" class="icon-btn" title="Add New Profile">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                    </button>
+                </div>
+                <div class="profiles-list-wrapper">
+                    <div id="profiles-list" class="profiles-list">
+                        <!-- Profiles will be dynamically injected here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Configuration / Input Form -->
+            <div class="card config-card">
+                <div class="card-header">
+                    <h2 id="config-title">New Profile</h2>
+                </div>
+                <form id="profile-form">
+                    <div class="input-group">
+                        <label for="profile-name">Name</label>
+                        <input type="text" id="profile-name" required placeholder="Enter name" autocomplete="off">
+                    </div>
+                    
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <label for="birth-date">Birth Date</label>
+                            <input type="date" id="birth-date" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="birth-time">Time (Optional)</label>
+                            <input type="time" id="birth-time" value="00:00">
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Accent Color</label>
+                        <div class="accent-selector">
+                            <button type="button" class="accent-dot active" data-color="indigo" style="background: var(--color-indigo);"></button>
+                            <button type="button" class="accent-dot" data-color="rose" style="background: var(--color-rose);"></button>
+                            <button type="button" class="accent-dot" data-color="emerald" style="background: var(--color-emerald);"></button>
+                            <button type="button" class="accent-dot" data-color="amber" style="background: var(--color-amber);"></button>
+                            <button type="button" class="accent-dot" data-color="cyan" style="background: var(--color-cyan);"></button>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" id="save-btn" class="btn btn-primary">
+                            <span>Save Profile</span>
+                        </button>
+                        <button type="button" id="delete-btn" class="btn btn-danger hidden">
+                            <span>Delete</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="theme-toggle-container">
+                <span>Theme Mode</span>
+                <button id="theme-toggle-btn" class="theme-btn" aria-label="Toggle light/dark theme">
+                    <span class="theme-icon dark-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                    </span>
+                    <span class="theme-icon light-icon hidden">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <line x1="12" y1="1" x2="12" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="23"></line>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                            <line x1="1" y1="12" x2="3" y2="12"></line>
+                            <line x1="21" y1="12" x2="23" y2="12"></line>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                        </svg>
+                    </span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <section class="main-content">
+            <!-- Empty state when no profile is active -->
+            <div id="empty-state" class="empty-state">
+                <div class="empty-illustration">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                    </svg>
+                </div>
+                <h3>Welcome to Chronos</h3>
+                <p>Create a profile or select one to begin exploring your cosmic time analytics, real-time age milestones, and planetary cycles.</p>
+                <button id="create-first-profile-btn" class="btn btn-primary">Create Profile</button>
+            </div>
+
+            <!-- Dashboard Content -->
+            <div id="dashboard-grid" class="dashboard-grid hidden">
+                
+                <!-- Hero Section: Dynamic Age Card -->
+                <div class="card hero-age-card col-span-3">
+                    <div class="card-bg-glow"></div>
+                    <div class="hero-header">
+                        <div class="user-greeting">
+                            <span class="greeting-prefix">Cosmic Age Dashboard for</span>
+                            <span id="active-profile-name" class="greeting-name">Loading...</span>
+                        </div>
+                        <div id="today-date-badge" class="date-badge">Loading date...</div>
+                    </div>
+                    
+                    <div class="age-ticker-container">
+                        <!-- Primary Counter -->
+                        <div class="ticker-grid">
+                            <div class="ticker-unit">
+                                <span id="age-years" class="ticker-value">00</span>
+                                <span class="ticker-label">Years</span>
+                            </div>
+                            <div class="ticker-separator">:</div>
+                            <div class="ticker-unit">
+                                <span id="age-months" class="ticker-value">00</span>
+                                <span class="ticker-label">Months</span>
+                            </div>
+                            <div class="ticker-separator">:</div>
+                            <div class="ticker-unit">
+                                <span id="age-days" class="ticker-value">00</span>
+                                <span class="ticker-label">Days</span>
+                            </div>
+                        </div>
+
+                        <!-- Real-time Ticking Counter -->
+                        <div class="realtime-ticker">
+                            <div class="realtime-unit">
+                                <span id="age-hours" class="realtime-value">00</span>
+                                <span class="realtime-label">hours</span>
+                            </div>
+                            <div class="realtime-separator">:</div>
+                            <div class="realtime-unit">
+                                <span id="age-minutes" class="realtime-value">00</span>
+                                <span class="realtime-label">minutes</span>
+                            </div>
+                            <div class="realtime-separator">:</div>
+                            <div class="realtime-unit">
+                                <span id="age-seconds" class="realtime-value">00</span>
+                                <span class="realtime-label">seconds</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Column 1: Time Countdown & Life Stats -->
+                <div class="col-flex">
+                    <!-- Next Birthday Card -->
+                    <div class="card bday-card">
+                        <div class="card-header">
+                            <h2>Next Birthday</h2>
+                            <svg class="header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20 12v10H4V12"></path>
+                                <path d="M2 7h20v5H2z"></path>
+                                <path d="M12 22V7"></path>
+                                <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"></path>
+                                <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"></path>
+                            </svg>
+                        </div>
+                        <div class="bday-countdown-wrapper">
+                            <div class="circular-progress">
+                                <svg class="progress-ring" width="120" height="120">
+                                    <circle class="progress-ring-circle-bg" stroke="var(--bg-card-border)" stroke-width="8" fill="transparent" r="50" cx="60" cy="60"/>
+                                    <circle id="bday-progress-circle" class="progress-ring-circle" stroke="var(--accent-color)" stroke-linecap="round" stroke-width="8" fill="transparent" r="50" cx="60" cy="60"/>
+                                </svg>
+                                <div class="countdown-text">
+                                    <span id="bday-days-left">0</span>
+                                    <span class="days-label">days left</span>
+                                </div>
+                            </div>
+                            <div class="bday-stats">
+                                <p>Turning <span id="next-age-val" class="highlight">0</span> on <span id="next-bday-date" class="highlight">---</span></p>
+                                <div class="bday-time-left">
+                                    <span id="bday-hours-left">00</span>h : <span id="bday-mins-left">00</span>m : <span id="bday-secs-left">00</span>s
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Life Progress Card -->
+                    <div class="card life-progress-card">
+                        <div class="card-header">
+                            <h2>Life Journey Progress</h2>
+                            <svg class="header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 6L6 18M6 6l12 12"></path>
+                            </svg>
+                        </div>
+                        <div class="life-progress-body">
+                            <div class="progress-bar-container">
+                                <div id="life-progress-bar" class="progress-bar" style="width: 0%;"></div>
+                            </div>
+                            <div class="progress-stats">
+                                <span>Based on 80-year lifespan</span>
+                                <span id="life-progress-percent" class="highlight">0%</span>
+                            </div>
+                            <div class="milestones-log">
+                                <div class="milestone-item" id="milestone-infancy">
+                                    <span class="milestone-dot"></span>
+                                    <span class="milestone-name">Infancy (0-2)</span>
+                                    <span class="milestone-status">Completed</span>
+                                </div>
+                                <div class="milestone-item" id="milestone-childhood">
+                                    <span class="milestone-dot"></span>
+                                    <span class="milestone-name">Childhood (3-12)</span>
+                                    <span class="milestone-status">Completed</span>
+                                </div>
+                                <div class="milestone-item" id="milestone-adolescence">
+                                    <span class="milestone-dot"></span>
+                                    <span class="milestone-name">Adolescence (13-19)</span>
+                                    <span class="milestone-status">Active</span>
+                                </div>
+                                <div class="milestone-item" id="milestone-adulthood">
+                                    <span class="milestone-dot"></span>
+                                    <span class="milestone-name">Adulthood (20-64)</span>
+                                    <span class="milestone-status">Upcoming</span>
+                                </div>
+                                <div class="milestone-item" id="milestone-senior">
+                                    <span class="milestone-dot"></span>
+                                    <span class="milestone-name">Senior (65+)</span>
+                                    <span class="milestone-status">Upcoming</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Column 2: Exact Breakdown & Life Stats -->
+                <div class="col-flex col-span-2">
+                    <!-- Total Breakdown Grid -->
+                    <div class="card breakdown-card">
+                        <div class="card-header">
+                            <h2>Precise Life Breakdown</h2>
+                            <svg class="header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="3" width="7" height="9"></rect>
+                                <rect x="14" y="3" width="7" height="5"></rect>
+                                <rect x="14" y="12" width="7" height="9"></rect>
+                                <rect x="3" y="16" width="7" height="5"></rect>
+                            </svg>
+                        </div>
+                        <div class="breakdown-grid">
+                            <div class="breakdown-item">
+                                <div class="breakdown-icon orange">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                                    </svg>
+                                </div>
+                                <div class="breakdown-data">
+                                    <span class="breakdown-label">Total Months</span>
+                                    <span id="breakdown-months" class="breakdown-val">0</span>
+                                </div>
+                            </div>
+
+                            <div class="breakdown-item">
+                                <div class="breakdown-icon purple">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                                    </svg>
+                                </div>
+                                <div class="breakdown-data">
+                                    <span class="breakdown-label">Total Weeks</span>
+                                    <span id="breakdown-weeks" class="breakdown-val">0</span>
+                                </div>
+                            </div>
+
+                            <div class="breakdown-item">
+                                <div class="breakdown-icon blue">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <polyline points="12 6 12 12 14 14"></polyline>
+                                    </svg>
+                                </div>
+                                <div class="breakdown-data">
+                                    <span class="breakdown-label">Total Days</span>
+                                    <span id="breakdown-days" class="breakdown-val">0</span>
+                                </div>
+                            </div>
+
+                            <div class="breakdown-item">
+                                <div class="breakdown-icon pink">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+                                    </svg>
+                                </div>
+                                <div class="breakdown-data">
+                                    <span class="breakdown-label">Total Hours</span>
+                                    <span id="breakdown-hours" class="breakdown-val">0</span>
+                                </div>
+                            </div>
+
+                            <div class="breakdown-item">
+                                <div class="breakdown-icon emerald">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                                    </svg>
+                                </div>
+                                <div class="breakdown-data">
+                                    <span class="breakdown-label">Total Minutes</span>
+                                    <span id="breakdown-minutes" class="breakdown-val">0</span>
+                                </div>
+                            </div>
+
+                            <div class="breakdown-item">
+                                <div class="breakdown-icon amber">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polygon points="12 2 2 22 22 22"></polygon>
+                                    </svg>
+                                </div>
+                                <div class="breakdown-data">
+                                    <span class="breakdown-label">Total Seconds</span>
+                                    <span id="breakdown-seconds" class="breakdown-val">0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cultural Identity / Astrology Card -->
+                    <div class="card astrology-card">
+                        <div class="card-header">
+                            <h2>Zodiac & Astro Signposts</h2>
+                            <svg class="header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                                <path d="M2 17l10 5 10-5"></path>
+                                <path d="M2 12l10 5 10-5"></path>
+                            </svg>
+                        </div>
+                        <div class="zodiac-flex">
+                            <div class="zodiac-card western">
+                                <div class="zodiac-badge">
+                                    <span id="western-zodiac-symbol" class="zodiac-symbol">♈</span>
+                                </div>
+                                <div class="zodiac-info">
+                                    <h3>Western Zodiac</h3>
+                                    <h4 id="western-zodiac-name">Aries</h4>
+                                    <p>Element: <span id="western-zodiac-element" class="highlight">Fire</span></p>
+                                    <span id="western-zodiac-dates" class="zodiac-dates">Mar 21 - Apr 19</span>
+                                </div>
+                            </div>
+                            
+                            <div class="zodiac-card chinese">
+                                <div class="zodiac-badge">
+                                    <span id="chinese-zodiac-symbol" class="zodiac-symbol">🐉</span>
+                                </div>
+                                <div class="zodiac-info">
+                                    <h3>Chinese Zodiac</h3>
+                                    <h4 id="chinese-zodiac-name">Dragon</h4>
+                                    <p>Element: <span id="chinese-zodiac-element" class="highlight">Wood</span></p>
+                                    <span id="chinese-zodiac-years" class="zodiac-dates">Year Animal</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Column 3: Biological Milestones & Planet Age Explorer -->
+                <div class="card bio-card col-span-3">
+                    <div class="card-header">
+                        <h2>Estimated Biological Milestones</h2>
+                        <svg class="header-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4.5 16.5c-1.5 1.26-2.5 3.19-2.5 5.5h20c0-2.31-1-4.24-2.5-5.5"></path>
+                            <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2z"></path>
+                            <circle cx="12" cy="10" r="3"></circle>
+                        </svg>
+                    </div>
+                    <div class="bio-milestones-grid">
+                        <div class="bio-item">
+                            <div class="bio-visual heartbeats">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                                </svg>
+                            </div>
+                            <span class="bio-label">Heartbeats Taken</span>
+                            <span id="bio-heartbeats" class="bio-val">0</span>
+                            <span class="bio-subtext">Avg. 80 beats per minute</span>
+                        </div>
+                        <div class="bio-item">
+                            <div class="bio-visual breaths">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"></path>
+                                    <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                                    <line x1="12" y1="19" x2="12" y2="23"></line>
+                                    <line x1="8" y1="23" x2="16" y2="23"></line>
+                                </svg>
+                            </div>
+                            <span class="bio-label">Breaths Taken</span>
+                            <span id="bio-breaths" class="bio-val">0</span>
+                            <span class="bio-subtext">Avg. 16 breaths per minute</span>
+                        </div>
+                        <div class="bio-item">
+                            <div class="bio-visual sleep">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                                </svg>
+                            </div>
+                            <span class="bio-label">Hours Slept</span>
+                            <span id="bio-sleep" class="bio-val">0</span>
+                            <span class="bio-subtext">Avg. 8 hours of sleep per day</span>
+                        </div>
+                        <div class="bio-item">
+                            <div class="bio-visual birthday-day">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="9" cy="7" r="4"></circle>
+                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                </svg>
+                            </div>
+                            <span class="bio-label">Day of Birth</span>
+                            <span id="bio-birth-day" class="bio-val">Sunday</span>
+                            <span id="bio-day-poem" class="bio-subtext">"Sunday's child is bonny and blithe"</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cosmic Planet Age Explorer -->
+                <div class="card planet-card col-span-3">
+                    <div class="card-header">
+                        <h2>Cosmic Planet Explorer</h2>
+                        <span class="header-desc">Your age & milestones across our Solar System</span>
+                    </div>
+                    <div class="planet-grid">
+                        <!-- Mercury -->
+                        <div class="planet-item">
+                            <div class="planet-graphic mercury-graphic">
+                                <div class="planet-sphere"></div>
+                            </div>
+                            <h3 class="planet-name">Mercury</h3>
+                            <div class="planet-stat">
+                                <span class="planet-stat-val" id="planet-mercury-age">0.00</span>
+                                <span class="planet-stat-unit">Mercury Years</span>
+                            </div>
+                            <div class="planet-next-bday">
+                                <span>Next Birthday in</span>
+                                <span id="planet-mercury-countdown">0 days</span>
+                            </div>
+                        </div>
+                        <!-- Venus -->
+                        <div class="planet-item">
+                            <div class="planet-graphic venus-graphic">
+                                <div class="planet-sphere"></div>
+                            </div>
+                            <h3 class="planet-name">Venus</h3>
+                            <div class="planet-stat">
+                                <span class="planet-stat-val" id="planet-venus-age">0.00</span>
+                                <span class="planet-stat-unit">Venus Years</span>
+                            </div>
+                            <div class="planet-next-bday">
+                                <span>Next Birthday in</span>
+                                <span id="planet-venus-countdown">0 days</span>
+                            </div>
+                        </div>
+                        <!-- Mars -->
+                        <div class="planet-item">
+                            <div class="planet-graphic mars-graphic">
+                                <div class="planet-sphere"></div>
+                            </div>
+                            <h3 class="planet-name">Mars</h3>
+                            <div class="planet-stat">
+                                <span class="planet-stat-val" id="planet-mars-age">0.00</span>
+                                <span class="planet-stat-unit">Mars Years</span>
+                            </div>
+                            <div class="planet-next-bday">
+                                <span>Next Birthday in</span>
+                                <span id="planet-mars-countdown">0 days</span>
+                            </div>
+                        </div>
+                        <!-- Jupiter -->
+                        <div class="planet-item">
+                            <div class="planet-graphic jupiter-graphic">
+                                <div class="planet-sphere"></div>
+                            </div>
+                            <h3 class="planet-name">Jupiter</h3>
+                            <div class="planet-stat">
+                                <span class="planet-stat-val" id="planet-jupiter-age">0.00</span>
+                                <span class="planet-stat-unit">Jupiter Years</span>
+                            </div>
+                            <div class="planet-next-bday">
+                                <span>Next Birthday in</span>
+                                <span id="planet-jupiter-countdown">0 days</span>
+                            </div>
+                        </div>
+                        <!-- Saturn -->
+                        <div class="planet-item">
+                            <div class="planet-graphic saturn-graphic">
+                                <div class="planet-ring"></div>
+                                <div class="planet-sphere"></div>
+                            </div>
+                            <h3 class="planet-name">Saturn</h3>
+                            <div class="planet-stat">
+                                <span class="planet-stat-val" id="planet-saturn-age">0.00</span>
+                                <span class="planet-stat-unit">Saturn Years</span>
+                            </div>
+                            <div class="planet-next-bday">
+                                <span>Next Birthday in</span>
+                                <span id="planet-saturn-countdown">0 days</span>
+                            </div>
+                        </div>
+                        <!-- Uranus -->
+                        <div class="planet-item">
+                            <div class="planet-graphic uranus-graphic">
+                                <div class="planet-ring"></div>
+                                <div class="planet-sphere"></div>
+                            </div>
+                            <h3 class="planet-name">Uranus</h3>
+                            <div class="planet-stat">
+                                <span class="planet-stat-val" id="planet-uranus-age">0.00</span>
+                                <span class="planet-stat-unit">Uranus Years</span>
+                            </div>
+                            <div class="planet-next-bday">
+                                <span>Next Birthday in</span>
+                                <span id="planet-uranus-countdown">0 days</span>
+                            </div>
+                        </div>
+                        <!-- Neptune -->
+                        <div class="planet-item">
+                            <div class="planet-graphic neptune-graphic">
+                                <div class="planet-sphere"></div>
+                            </div>
+                            <h3 class="planet-name">Neptune</h3>
+                            <div class="planet-stat">
+                                <span class="planet-stat-val" id="planet-neptune-age">0.00</span>
+                                <span class="planet-stat-unit">Neptune Years</span>
+                            </div>
+                            <div class="planet-next-bday">
+                                <span>Next Birthday in</span>
+                                <span id="planet-neptune-countdown">0 days</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Time Traveler Tools -->
+                <div class="card time-travel-card col-span-3">
+                    <div class="card-header">
+                        <h2>Chronological Time Travel Tools</h2>
+                        <span class="header-desc">Simulate dates, future ages, and milestones</span>
+                    </div>
+                    <div class="travel-flex">
+                        <div class="travel-tool-box">
+                            <h3>Age Simulator</h3>
+                            <p class="tool-desc">Calculate exactly how old you will be on a specific future calendar date.</p>
+                            <div class="tool-controls">
+                                <input type="date" id="travel-future-date" aria-label="Choose future date">
+                                <button id="calculate-travel-btn" class="btn btn-secondary">Simulate</button>
+                            </div>
+                            <div id="travel-result-1" class="travel-result hidden">
+                                On <span class="highlight date-val">---</span>, you will be <span class="highlight age-val">0 years, 0 months, 0 days</span> old!
+                            </div>
+                        </div>
+
+                        <div class="travel-tool-box">
+                            <h3>Milestone Calculator</h3>
+                            <p class="tool-desc">Find out the exact calendar date you will reach a specific life milestone.</p>
+                            <div class="tool-controls">
+                                <select id="travel-milestone-select" aria-label="Select milestone">
+                                    <option value="10000">10,000 Days lived</option>
+                                    <option value="15000">15,000 Days lived</option>
+                                    <option value="20000">20,000 Days lived</option>
+                                    <option value="25000">25,000 Days lived</option>
+                                    <option value="30000">30,000 Days lived</option>
+                                    <option value="500000000">500 Million Seconds lived</option>
+                                    <option value="1000000000">1 Billion Seconds lived</option>
+                                    <option value="1500000000">1.5 Billion Seconds lived</option>
+                                    <option value="2000000000">2 Billion Seconds lived</option>
+                                    <option value="50">50 Earth Years old</option>
+                                    <option value="75">75 Earth Years old</option>
+                                    <option value="100">100 Earth Years old</option>
+                                </select>
+                                <button id="calculate-milestone-btn" class="btn btn-secondary">Calculate</button>
+                            </div>
+                            <div id="travel-result-2" class="travel-result hidden">
+                                You will reach this milestone on <span class="highlight date-val">---</span>! (Only <span class="highlight days-val">0</span> days left).
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 Chronos Portal. Handcrafted with mathematical precision. No AI integration.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

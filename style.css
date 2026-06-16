@@ -1,0 +1,1422 @@
+/* ==========================================================================
+   Chronos — Premium Design System & Stylesheet
+   ========================================================================== */
+
+/* Accent Color Options */
+:root {
+    --color-indigo: #6366f1;
+    --color-indigo-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+    --color-rose: #f43f5e;
+    --color-rose-gradient: linear-gradient(135deg, #f43f5e 0%, #ec4899 100%);
+    --color-emerald: #10b981;
+    --color-emerald-gradient: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
+    --color-amber: #f59e0b;
+    --color-amber-gradient: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
+    --color-cyan: #06b6d4;
+    --color-cyan-gradient: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+
+    /* Default Accent (Indigo) */
+    --accent-color: var(--color-indigo);
+    --accent-gradient: var(--color-indigo-gradient);
+    --accent-glow: rgba(99, 102, 241, 0.4);
+
+    /* Fonts & Radii */
+    --font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --radius-sm: 8px;
+    --radius-md: 14px;
+    --radius-lg: 24px;
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Theme Modes */
+.dark-theme {
+    --bg-primary: #080710;
+    --bg-secondary: #0f0e1d;
+    --bg-card: rgba(18, 17, 35, 0.65);
+    --bg-card-border: rgba(255, 255, 255, 0.06);
+    --text-primary: #f8fafc;
+    --text-secondary: #cbd5e1;
+    --text-muted: #64748b;
+    --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+    --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -4px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.4);
+    --glow-opacity: 0.12;
+    --card-glow-bg: rgba(255, 255, 255, 0.02);
+}
+
+.light-theme {
+    --bg-primary: #f1f5f9;
+    --bg-secondary: #ffffff;
+    --bg-card: rgba(255, 255, 255, 0.75);
+    --bg-card-border: rgba(0, 0, 0, 0.08);
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --text-muted: #94a3b8;
+    --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.08);
+    --glow-opacity: 0.04;
+    --card-glow-bg: rgba(0, 0, 0, 0.01);
+}
+
+/* Base resets & layouts */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: var(--font-family);
+    -webkit-font-smoothing: antialiased;
+}
+
+body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+    position: relative;
+    transition: background-color 0.4s ease;
+}
+
+/* Background Ambient Glows */
+.glow-container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.glow-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(120px);
+    opacity: var(--glow-opacity);
+    mix-blend-mode: screen;
+    transition: all 0.6s ease;
+}
+
+.orb-1 {
+    width: 40vw;
+    height: 40vw;
+    background: var(--accent-gradient);
+    top: -10vw;
+    left: -10vw;
+}
+
+.orb-2 {
+    width: 35vw;
+    height: 35vw;
+    background: var(--bg-card-border);
+    bottom: -5vw;
+    right: 5vw;
+}
+
+.orb-3 {
+    width: 30vw;
+    height: 30vw;
+    background: var(--accent-color);
+    top: 30%;
+    right: -10vw;
+}
+
+/* Dashboard Wrapper */
+.dashboard-container {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+    width: 100%;
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 30px;
+    gap: 30px;
+    z-index: 1;
+}
+
+/* ==========================================================================
+   Sidebar Styles
+   ========================================================================== */
+.sidebar {
+    width: 340px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.logo-area {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 5px;
+}
+
+.logo-icon {
+    width: 32px;
+    height: 32px;
+    color: var(--accent-color);
+    filter: drop-shadow(0 0 8px var(--accent-color));
+    animation: rotateLogo 20s linear infinite;
+}
+
+@keyframes rotateLogo {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.logo-text h1 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.logo-text span {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    letter-spacing: 3px;
+    display: block;
+    margin-top: -2px;
+}
+
+/* Glass Cards */
+.card {
+    background: var(--bg-card);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--bg-card-border);
+    border-radius: var(--radius-md);
+    padding: 24px;
+    box-shadow: var(--shadow-md);
+    position: relative;
+    overflow: hidden;
+    transition: var(--transition);
+}
+
+.card:hover {
+    box-shadow: var(--shadow-lg);
+    border-color: rgba(255, 255, 255, 0.12);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 2;
+}
+
+.card-header h2 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: 0.5px;
+}
+
+.card-header .header-desc {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.header-icon {
+    width: 20px;
+    height: 20px;
+    color: var(--accent-color);
+    opacity: 0.8;
+}
+
+/* Profile Manager Details */
+.profiles-list-wrapper {
+    max-height: 150px;
+    overflow-y: auto;
+    margin: -5px;
+    padding: 5px;
+}
+
+.profiles-list-wrapper::-webkit-scrollbar {
+    width: 4px;
+}
+
+.profiles-list-wrapper::-webkit-scrollbar-thumb {
+    background: var(--bg-card-border);
+    border-radius: 2px;
+}
+
+.profiles-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.profile-badge {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--bg-card-border);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: var(--transition);
+    user-select: none;
+}
+
+.profile-badge:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+    transform: translateX(2px);
+}
+
+.profile-badge.active {
+    background: rgba(99, 102, 241, 0.08);
+    border-color: var(--accent-color);
+    box-shadow: 0 0 12px rgba(99, 102, 241, 0.15);
+}
+
+.profile-badge-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.profile-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    box-shadow: 0 0 8px currentColor;
+}
+
+.profile-name {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.profile-bday {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+.profile-badge-actions {
+    display: flex;
+    gap: 6px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.profile-badge:hover .profile-badge-actions {
+    opacity: 1;
+}
+
+/* Form inputs & styles */
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 16px;
+}
+
+.input-group label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.input-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+input[type="text"],
+input[type="date"],
+input[type="time"],
+select {
+    width: 100%;
+    padding: 12px 14px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--bg-card-border);
+    border-radius: var(--radius-sm);
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    outline: none;
+    transition: var(--transition);
+}
+
+.light-theme input[type="text"],
+.light-theme input[type="date"],
+.light-theme input[type="time"],
+.light-theme select {
+    background: rgba(0, 0, 0, 0.02);
+}
+
+input:focus, select:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+/* Accent Picker dots */
+.accent-selector {
+    display: flex;
+    gap: 8px;
+    margin-top: 4px;
+}
+
+.accent-dot {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: var(--transition);
+    position: relative;
+}
+
+.accent-dot:hover {
+    transform: scale(1.15);
+}
+
+.accent-dot.active {
+    border-color: var(--text-primary);
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.3);
+}
+
+/* Button variants */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 20px;
+    border-radius: var(--radius-sm);
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    border: 1px solid transparent;
+    outline: none;
+    user-select: none;
+}
+
+.btn-primary {
+    background: var(--accent-gradient);
+    color: #ffffff;
+    box-shadow: 0 4px 14px var(--accent-glow);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px var(--accent-glow);
+}
+
+.btn-secondary {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: var(--bg-card-border);
+    color: var(--text-primary);
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.btn-danger {
+    background: rgba(244, 63, 94, 0.1);
+    border-color: rgba(244, 63, 94, 0.2);
+    color: var(--color-rose);
+}
+
+.btn-danger:hover {
+    background: rgba(244, 63, 94, 0.2);
+    border-color: var(--color-rose);
+}
+
+.icon-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+}
+
+.icon-btn:hover {
+    color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.form-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 24px;
+}
+
+.form-actions button {
+    flex: 1;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Theme toggle */
+.theme-toggle-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    background: rgba(255, 255, 255, 0.01);
+    border: 1px dashed var(--bg-card-border);
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.theme-btn {
+    background: var(--bg-card-border);
+    border: none;
+    color: var(--text-primary);
+    padding: 8px 12px;
+    border-radius: 30px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+}
+
+.theme-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.theme-icon svg {
+    width: 16px;
+    height: 16px;
+}
+
+/* ==========================================================================
+   Main Content Layout
+   ========================================================================== */
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Empty State */
+.empty-state {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    animation: fadeIn 0.8s ease;
+}
+
+.empty-illustration {
+    width: 80px;
+    height: 80px;
+    color: var(--accent-color);
+    margin-bottom: 24px;
+    filter: drop-shadow(0 0 12px var(--accent-glow));
+    animation: float 4s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.empty-state h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+
+.empty-state p {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+/* Dashboard grid */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.col-span-2 { grid-column: span 2; }
+.col-span-3 { grid-column: span 3; }
+.col-flex {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* ==========================================================================
+   Hero Card (Ticker Display)
+   ========================================================================== */
+.hero-age-card {
+    background: radial-gradient(circle at 80% 20%, rgba(99, 102, 241, 0.07) 0%, transparent 60%), var(--bg-card);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.hero-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 1px solid var(--bg-card-border);
+    padding-bottom: 16px;
+    margin-bottom: 24px;
+}
+
+.user-greeting {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.greeting-prefix {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+}
+
+.greeting-name {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--text-primary);
+}
+
+.date-badge {
+    padding: 6px 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--bg-card-border);
+    border-radius: 30px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.age-ticker-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 0 10px;
+}
+
+/* Large numbers grid */
+.ticker-grid {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+.ticker-unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.ticker-value {
+    font-size: 4.5rem;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.15));
+}
+
+.ticker-label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    letter-spacing: 2px;
+    margin-top: 10px;
+}
+
+.ticker-separator {
+    font-size: 3.5rem;
+    font-weight: 300;
+    color: var(--text-muted);
+    opacity: 0.3;
+    transform: translateY(-8px);
+}
+
+/* Real-time Sub-ticker */
+.realtime-ticker {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 24px;
+    padding: 10px 24px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px dashed var(--bg-card-border);
+    border-radius: 40px;
+}
+
+.realtime-unit {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+}
+
+.realtime-value {
+    font-size: 1.3rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--text-primary);
+}
+
+.realtime-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.realtime-separator {
+    color: var(--text-muted);
+    opacity: 0.4;
+    font-weight: 300;
+}
+
+/* ==========================================================================
+   Next Birthday Widget
+   ========================================================================== */
+.bday-countdown-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 10px 0;
+}
+
+.circular-progress {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.progress-ring {
+    transform: rotate(-90deg);
+}
+
+.progress-ring-circle {
+    transition: stroke-dashoffset 0.35s;
+    transform-origin: 50% 50%;
+}
+
+.countdown-text {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#bday-days-left {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--text-primary);
+}
+
+.days-label {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.bday-stats {
+    flex: 1;
+}
+
+.bday-stats p {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 8px;
+}
+
+.highlight {
+    font-weight: 700;
+    color: var(--accent-color);
+}
+
+.bday-time-left {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--bg-card-border);
+    padding: 6px 12px;
+    border-radius: 6px;
+    display: inline-block;
+    font-variant-numeric: tabular-nums;
+}
+
+/* ==========================================================================
+   Life Progress Card
+   ========================================================================== */
+.life-progress-body {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.progress-bar-container {
+    width: 100%;
+    height: 10px;
+    background: var(--bg-card-border);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    background: var(--accent-gradient);
+    border-radius: 10px;
+    box-shadow: 0 0 10px var(--accent-glow);
+    transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.progress-stats {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.milestones-log {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.milestone-item {
+    display: flex;
+    align-items: center;
+    font-size: 0.8rem;
+    padding: 6px 10px;
+    background: rgba(255, 255, 255, 0.01);
+    border: 1px solid transparent;
+    border-radius: 6px;
+}
+
+.milestone-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    margin-right: 10px;
+    background-color: var(--text-muted);
+}
+
+.milestone-name {
+    flex: 1;
+    color: var(--text-secondary);
+}
+
+.milestone-status {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-muted);
+}
+
+/* Active and Completed States in Milestone Logs */
+.milestone-item.completed {
+    background: rgba(16, 185, 129, 0.03);
+}
+.milestone-item.completed .milestone-dot {
+    background-color: var(--color-emerald);
+    box-shadow: 0 0 6px var(--color-emerald);
+}
+.milestone-item.completed .milestone-status {
+    color: var(--color-emerald);
+}
+
+.milestone-item.active {
+    background: rgba(99, 102, 241, 0.05);
+    border-color: rgba(99, 102, 241, 0.15);
+}
+.milestone-item.active .milestone-dot {
+    background-color: var(--accent-color);
+    box-shadow: 0 0 8px var(--accent-color);
+    animation: pulseDot 2s infinite;
+}
+.milestone-item.active .milestone-name {
+    font-weight: 600;
+}
+.milestone-item.active .milestone-status {
+    color: var(--accent-color);
+}
+
+@keyframes pulseDot {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; transform: scale(1.2); }
+}
+
+/* ==========================================================================
+   Precise Breakdown Grid
+   ========================================================================== */
+.breakdown-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+.breakdown-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.015);
+    border: 1px solid var(--bg-card-border);
+    border-radius: var(--radius-sm);
+    transition: var(--transition);
+}
+
+.breakdown-item:hover {
+    background: rgba(255, 255, 255, 0.03);
+    border-color: rgba(255, 255, 255, 0.08);
+    transform: translateY(-2px);
+}
+
+.breakdown-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.breakdown-icon svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* Icon Palette colors */
+.breakdown-icon.orange { background: rgba(245, 158, 11, 0.1); color: var(--color-amber); }
+.breakdown-icon.purple { background: rgba(168, 85, 247, 0.1); color: #a855f7; }
+.breakdown-icon.blue { background: rgba(59, 130, 246, 0.1); color: #3b82f6; }
+.breakdown-icon.pink { background: rgba(236, 72, 153, 0.1); color: #ec4899; }
+.breakdown-icon.emerald { background: rgba(16, 185, 129, 0.1); color: var(--color-emerald); }
+.breakdown-icon.amber { background: rgba(245, 158, 11, 0.1); color: var(--color-amber); }
+
+.breakdown-data {
+    display: flex;
+    flex-direction: column;
+}
+
+.breakdown-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.breakdown-val {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-top: 2px;
+    font-variant-numeric: tabular-nums;
+}
+
+/* ==========================================================================
+   Astrology Cards
+   ========================================================================== */
+.zodiac-flex {
+    display: flex;
+    gap: 16px;
+}
+
+.zodiac-card {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.01);
+    border: 1px solid var(--bg-card-border);
+    border-radius: var(--radius-sm);
+    transition: var(--transition);
+}
+
+.zodiac-card:hover {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 10px rgba(99, 102, 241, 0.05);
+}
+
+.zodiac-badge {
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--bg-card-border);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.zodiac-symbol {
+    font-size: 1.8rem;
+    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.2));
+}
+
+.zodiac-info h3 {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+.zodiac-info h4 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 2px 0 4px;
+}
+
+.zodiac-info p {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+.zodiac-dates {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    display: block;
+    margin-top: 4px;
+}
+
+/* ==========================================================================
+   Biological Stats Card
+   ========================================================================== */
+.bio-milestones-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+}
+
+.bio-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 20px 14px;
+    background: rgba(255, 255, 255, 0.015);
+    border: 1px solid var(--bg-card-border);
+    border-radius: var(--radius-sm);
+    transition: var(--transition);
+}
+
+.bio-item:hover {
+    transform: translateY(-3px);
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.bio-visual {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+}
+
+.bio-visual svg {
+    width: 20px;
+    height: 20px;
+}
+
+.bio-visual.heartbeats { background: rgba(244, 63, 94, 0.08); color: var(--color-rose); }
+.bio-visual.breaths { background: rgba(6, 182, 212, 0.08); color: var(--color-cyan); }
+.bio-visual.sleep { background: rgba(168, 85, 247, 0.08); color: #a855f7; }
+.bio-visual.birthday-day { background: rgba(16, 185, 129, 0.08); color: var(--color-emerald); }
+
+.bio-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+}
+
+.bio-val {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+    font-variant-numeric: tabular-nums;
+}
+
+.bio-subtext {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    line-height: 1.4;
+}
+
+/* ==========================================================================
+   Cosmic Planet Age Explorer
+   ========================================================================== */
+.planet-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 14px;
+}
+
+.planet-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 16px 10px;
+    background: rgba(255, 255, 255, 0.01);
+    border: 1px solid var(--bg-card-border);
+    border-radius: var(--radius-sm);
+    transition: var(--transition);
+}
+
+.planet-item:hover {
+    background: rgba(255, 255, 255, 0.025);
+    border-color: rgba(255, 255, 255, 0.1);
+    transform: scale(1.03);
+}
+
+/* Planet visual rendering in CSS */
+.planet-graphic {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 14px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.planet-sphere {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    box-shadow: inset -6px -6px 12px rgba(0, 0, 0, 0.6);
+}
+
+/* Planets styles */
+.mercury-graphic .planet-sphere {
+    background: radial-gradient(circle at 30% 30%, #b5b5be 0%, #6b6b75 100%);
+    width: 60%;
+    height: 60%;
+}
+.venus-graphic .planet-sphere {
+    background: radial-gradient(circle at 30% 30%, #e6a053 0%, #b86214 100%);
+    width: 80%;
+    height: 80%;
+}
+.mars-graphic .planet-sphere {
+    background: radial-gradient(circle at 30% 30%, #f16950 0%, #9e2a16 100%);
+    width: 70%;
+    height: 70%;
+}
+.jupiter-graphic .planet-sphere {
+    background: radial-gradient(circle at 30% 30%, #e4b895 0%, #905d3b 100%);
+}
+.saturn-graphic, .uranus-graphic {
+    perspective: 100px;
+}
+.saturn-graphic .planet-sphere {
+    background: radial-gradient(circle at 30% 30%, #ead09b 0%, #a48243 100%);
+    width: 75%;
+    height: 75%;
+    z-index: 2;
+}
+.saturn-graphic .planet-ring {
+    position: absolute;
+    width: 130%;
+    height: 25%;
+    border: 4px solid rgba(212, 178, 118, 0.4);
+    border-radius: 50%;
+    transform: rotateX(65deg) rotateY(-15deg);
+    z-index: 1;
+}
+.uranus-graphic .planet-sphere {
+    background: radial-gradient(circle at 30% 30%, #ade6ec 0%, #4495a0 100%);
+    width: 70%;
+    height: 70%;
+    z-index: 2;
+}
+.uranus-graphic .planet-ring {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border: 1px solid rgba(173, 230, 236, 0.3);
+    border-radius: 50%;
+    transform: rotateY(80deg);
+    z-index: 1;
+}
+.neptune-graphic .planet-sphere {
+    background: radial-gradient(circle at 30% 30%, #5275e6 0%, #1e3596 100%);
+    width: 70%;
+    height: 70%;
+}
+
+.planet-name {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+.planet-stat {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 8px;
+}
+
+.planet-stat-val {
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: var(--accent-color);
+}
+
+.planet-stat-unit {
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    margin-top: 2px;
+}
+
+.planet-next-bday {
+    font-size: 0.65rem;
+    color: var(--text-secondary);
+    border-top: 1px solid var(--bg-card-border);
+    padding-top: 6px;
+    width: 100%;
+}
+
+.planet-next-bday span {
+    display: block;
+}
+
+.planet-next-bday span:last-child {
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-top: 2px;
+}
+
+/* ==========================================================================
+   Time Travel Tool Cards
+   ========================================================================== */
+.travel-flex {
+    display: flex;
+    gap: 24px;
+}
+
+.travel-tool-box {
+    flex: 1;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.01);
+    border: 1px solid var(--bg-card-border);
+    border-radius: var(--radius-sm);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.travel-tool-box h3 {
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.tool-desc {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+.tool-controls {
+    display: flex;
+    gap: 10px;
+    margin-top: 6px;
+}
+
+.tool-controls input, 
+.tool-controls select {
+    flex: 1;
+    padding: 10px;
+}
+
+.tool-controls button {
+    flex-shrink: 0;
+    padding: 10px 16px;
+}
+
+.travel-result {
+    font-size: 0.85rem;
+    color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.02);
+    border-left: 3px solid var(--accent-color);
+    padding: 10px 14px;
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    margin-top: 10px;
+    animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+.footer {
+    text-align: center;
+    padding: 20px;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    border-top: 1px solid var(--bg-card-border);
+    background-color: var(--bg-secondary);
+    position: relative;
+    z-index: 1;
+}
+
+/* ==========================================================================
+   Responsive Breakpoints
+   ========================================================================== */
+@media (max-width: 1200px) {
+    .dashboard-container {
+        flex-direction: column;
+        padding: 20px;
+    }
+    
+    .sidebar {
+        width: 100%;
+        flex-direction: row;
+        align-items: stretch;
+    }
+
+    .logo-area {
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .profile-manager, .config-card {
+        flex: 1;
+    }
+
+    .theme-toggle-container {
+        flex-direction: column;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .planet-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media (max-width: 900px) {
+    .sidebar {
+        flex-direction: column;
+    }
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+    .col-span-2, .col-span-3 {
+        grid-column: span 1;
+    }
+    .bio-milestones-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .planet-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .ticker-value {
+        font-size: 3rem;
+    }
+    .ticker-separator {
+        font-size: 2.2rem;
+    }
+    .realtime-ticker {
+        flex-wrap: wrap;
+        border-radius: 12px;
+    }
+    .bday-countdown-wrapper {
+        flex-direction: column;
+        align-items: center;
+    }
+    .breakdown-grid {
+        grid-template-columns: 1fr;
+    }
+    .zodiac-flex {
+        flex-direction: column;
+    }
+    .bio-milestones-grid {
+        grid-template-columns: 1fr;
+    }
+    .planet-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .travel-flex {
+        flex-direction: column;
+    }
+}
